@@ -34,7 +34,7 @@ aptly_repositories_distribution: stretch
 
 # Security
 aptly_gpg_path: "{{ aptly_install_path }}/gpg"
-aptly_disable_sign: "false"
-aptly_disable_verify: "false"
+aptly_disable_sign: "false"   # must be lowercase string literal since this is inserted verbatim into aptly conf
+aptly_disable_verify: "false"   # must be lowercase string literal since this is inserted verbatim into aptly conf
 
 # aptly_email:
