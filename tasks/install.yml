@@ -40,7 +40,7 @@
     owner: "{{ aptly_user }}"
     group: "{{ aptly_group }}"
     mode: 0750
-  when: 'aptly_force_reinstall or aptly_check|failed or aptly_check.stdout == "{{ aptly_version }}"'
+  when: 'aptly_force_reinstall or aptly_check|failed or (aptly_check.stdout == aptly_version)'
 
 - name: APTLY | Enable binary execution
   file:
