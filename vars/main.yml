@@ -3,7 +3,7 @@ required_libs:
   - haveged
   - graphviz
 
-aptly_mirror: "https://bintray.com/artifact/download/smira/aptly"
+# latest github release tarball: https://github.com/aptly-dev/aptly/releases/download/v1.4.0/aptly_1.4.0_linux_amd64.tar.gz
+aptly_release_base_url: "https://github.com/aptly-dev/aptly/releases/download"
 aptly_package_name: "aptly_{{ aptly_version }}_{{ aptly_dist }}"
-aptly_package: "{{ aptly_package_name }}.tar.gz"
-aptly_sources_url: "{{ aptly_mirror }}/{{ aptly_package }}"
+aptly_release_url: "{{ aptly_release_base_url }}/v{{ aptly_version }}/{{ aptly_package_name }}.tar.gz"
