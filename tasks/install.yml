@@ -34,7 +34,7 @@
 - name: APTLY | Untar aptly
   unarchive:
     extra_opts: ['--strip-components=1']
-    src: "{{ aptly_sources_url }}"
+    src: "{{ aptly_release_url }}"
     remote_src: yes
     dest: "{{ aptly_install_path }}"
     owner: "{{ aptly_user }}"
