@@ -20,7 +20,7 @@
     group: "{{ aptly_group }}"
   notify: restart aptly
 
-- name: APTLY | Copy gpg batch file
+- name: APTLY | Copy gpg batch file for automating gpg key creation
   template:
     src: gpg.j2
     dest: "/tmp/gpg"
@@ -54,7 +54,7 @@
   set_fact:
     aptly_key_id: "{{ aptly_key_info.stdout }}"
 
-- name: APTLY | Generate gpg keys
+- name: APTLY | Generate gpg keys. See here for details: https://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
   command: gpg --batch --gen-key /tmp/gpg
   become_user: "{{ aptly_user }}"
   become: true
