@@ -20,27 +20,27 @@
     group: "{{ aptly_group }}"
   notify: restart aptly
 
-- name: APTLY | Copy gpg batch file for automating gpg key creation
-  template:
-    src: gpg.j2
-    dest: "/tmp/gpg"
-    mode: 0640
-    owner: "{{ aptly_user }}"
-    group: "{{ aptly_group }}"
+#- name: APTLY | Copy gpg batch file for automating gpg key creation
+#  template:
+#    src: gpg.j2
+#    dest: "/tmp/gpg"
+#    mode: 0640
+#    owner: "{{ aptly_user }}"
+#    group: "{{ aptly_group }}"
 
-- name: APTLY | Set key query
-  set_fact:
-    the_query: gpg --list-keys | grep 'pub ' | tail -1 | sed 's/pub   2048D\///g' | cut -d' ' -f1
+#- name: APTLY | Set key query
+#  set_fact:
+#    the_query: gpg --list-keys | grep 'pub ' | tail -1 | sed 's/pub   2048D\///g' | cut -d' ' -f1
 
-- name: APTLY | Obtain last key id
-  shell: bash -lc "{{ the_query }}"
-  become_user: "{{ aptly_user }}"
-  become: true
-  changed_when: false
-  register: aptly_key_info
-  ignore_errors: true
-  tags:
-    skip_ansible_lint
+#- name: APTLY | Obtain last key id
+#  shell: bash -lc "{{ the_query }}"
+#  become_user: "{{ aptly_user }}"
+#  become: true
+#  changed_when: false
+#  register: aptly_key_info
+#  ignore_errors: true
+#  tags:
+#    skip_ansible_lint
 ##gpg --list-keys
 ##/home/aptly/.gnupg/pubring.gpg
 ##------------------------------
@@ -52,22 +52,23 @@
 
 - name: APTLY | Set aptly_key_id
   set_fact:
-    aptly_key_id: "{{ aptly_key_info.stdout }}"
+    # aptly_key_id: "{{ aptly_key_info.stdout }}"
+    aptly_key_id: "{{ aptly_email }}"
 
-- name: APTLY | Generate gpg keys. See here for details: https://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
-  command: gpg --batch --gen-key /tmp/gpg
-  become_user: "{{ aptly_user }}"
-  become: true
-  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
+#- name: APTLY | Generate gpg keys. See here for details: https://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
+#  command: gpg --batch --gen-key /tmp/gpg
+#  become_user: "{{ aptly_user }}"
+#  become: true
+#  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
 
-- name: APTLY | Obtain last key id
-  shell: bash -lc "{{ the_query }}"
-  become_user: "{{ aptly_user }}"
-  become: true
-  register: aptly_key_info_new
-  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
-  tags:
-    skip_ansible_lint
+#- name: APTLY | Obtain last key id
+#  shell: bash -lc "{{ the_query }}"
+#  become_user: "{{ aptly_user }}"
+#  become: true
+#  register: aptly_key_info_new
+#  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
+#  tags:
+#    skip_ansible_lint
 
 - name: APTLY | Export key
   shell: gpg --export -a {{ aptly_user }} > {{ aptly_gpg_path }}/public.key
@@ -75,7 +76,7 @@
   become: true
   when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
 
-- name: APTLY | Set aptly_key_id
-  set_fact:
-    aptly_key_id: "{{ aptly_key_info.stdout }}"
-    when: aptly_key_info_new|changed
+#- name: APTLY | Set aptly_key_id
+#  set_fact:
+#    aptly_key_id: "{{ aptly_key_info.stdout }}"
+#    when: aptly_key_info_new|changed
