@@ -74,6 +74,8 @@
   shell: gpg --export -a {{ aptly_user }} > {{ aptly_gpg_path }}/public.key
   become_user: "{{ aptly_user }}"
   become: true
+  environment: 
+    GPG_TTY: "$(tty)"
   # TODO: mamke this conditional
   # when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
 
