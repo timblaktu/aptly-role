@@ -58,14 +58,14 @@
   command: gpg --batch --gen-key /tmp/gpg
   become_user: "{{ aptly_user }}"
   become: true
-  when: aptly_key_info|failed or aptly_key_info.stdout == ""
+  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
 
 - name: APTLY | Obtain last key id
   shell: bash -lc "{{ the_query }}"
   become_user: "{{ aptly_user }}"
   become: true
   register: aptly_key_info_new
-  when: aptly_key_info|failed or aptly_key_info.stdout == ""
+  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
   tags:
     skip_ansible_lint
 
@@ -73,7 +73,7 @@
   shell: gpg --export -a {{ aptly_user }} > {{ aptly_gpg_path }}/public.key
   become_user: "{{ aptly_user }}"
   become: true
-  when: aptly_key_info|failed or aptly_key_info.stdout == ""
+  when: (aptly_key_info is failed) or aptly_key_info.stdout == ""
 
 - name: APTLY | Set aptly_key_id
   set_fact:
